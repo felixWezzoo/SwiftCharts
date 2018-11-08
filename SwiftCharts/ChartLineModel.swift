@@ -23,7 +23,9 @@ public struct ChartLineModel<T: ChartPoint> {
     public let lineJoin: LineJoin
     
     public let lineCap: LineCap
-    
+
+    public let lineGradientDirection: LineGradientDirection
+
     /// The duration in seconds of the animation that is run when the line appears
     public let animDuration: Float
 
@@ -33,19 +35,20 @@ public struct ChartLineModel<T: ChartPoint> {
     /// The dash pattern for the line
     public let dashPattern: [Double]?
     
-    public init(chartPoints: [T], lineColors: [UIColor], lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
+    public init(chartPoints: [T], lineColors: [UIColor], lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, lineGradientDirection: LineGradientDirection = .xAxis, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
         self.chartPoints = chartPoints
         self.lineColors = lineColors
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
         self.lineCap = lineCap
+        self.lineGradientDirection = lineGradientDirection
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.dashPattern = dashPattern
     }
     
-    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
-        self.init(chartPoints: chartPoints, lineColors: [lineColor], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, animDuration: animDuration, animDelay: animDelay, dashPattern: dashPattern)
+    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, lineGradientDirection: LineGradientDirection = .xAxis, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
+        self.init(chartPoints: chartPoints, lineColors: [lineColor], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, lineGradientDirection: lineGradientDirection, animDuration: animDuration, animDelay: animDelay, dashPattern: dashPattern)
     }
     /// The number of chart points in the model
     var chartPointsCount: Int {

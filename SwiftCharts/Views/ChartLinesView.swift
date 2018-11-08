@@ -19,15 +19,17 @@ open class ChartLinesView: UIView {
     public let lineWidth: CGFloat
     public let lineJoin: LineJoin
     public let lineCap: LineCap
+    public let lineGradientDirection: LineGradientDirection
     public let animDuration: Float
     public let animDelay: Float
     public let dashPattern: [Double]?
     
-    public init(path: UIBezierPath, frame: CGRect, lineColors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
+    public init(path: UIBezierPath, frame: CGRect, lineColors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, lineGradientDirection: LineGradientDirection, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
         self.lineColors = lineColors
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
         self.lineCap = lineCap
+        self.lineGradientDirection = lineGradientDirection
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.dashPattern = dashPattern
@@ -38,8 +40,8 @@ open class ChartLinesView: UIView {
         show(path: path)
     }
     
-    public convenience init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
-        self.init(path: path, frame: frame, lineColors: [lineColor], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, animDuration: animDuration, animDelay: animDelay, dashPattern: dashPattern)
+    public convenience init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, lineGradientDirection: LineGradientDirection, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
+        self.init(path: path, frame: frame, lineColors: [lineColor], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, lineGradientDirection: lineGradientDirection, animDuration: animDuration, animDelay: animDelay, dashPattern: dashPattern)
     }
 
     required public init(coder aDecoder: NSCoder) {
@@ -101,8 +103,8 @@ open class ChartLinesView: UIView {
     fileprivate func addGradientForMultiColorLine(withLayer lineLayer: CAShapeLayer) {
         if lineColors.count > 1 {
             let gradientLayer = CAGradientLayer()
-            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
-            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0)
+            gradientLayer.startPoint = lineGradientDirection.gradientStartPoint
+            gradientLayer.endPoint = lineGradientDirection.gradientEndPoint
             gradientLayer.frame = self.frame
             gradientLayer.colors = lineColors.map({$0.cgColor})
             gradientLayer.mask = lineLayer
