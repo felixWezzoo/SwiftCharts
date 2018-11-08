@@ -52,31 +52,52 @@ public enum LineCap {
     }
 }
 
+public enum LineGradientDirection {
+    case xAxis
+    case yAxis
+    
+    public var gradientStartPoint: CGPoint {
+        switch self {
+        case .xAxis: return CGPoint(x: 0.0, y: 0.0)
+        case .yAxis: return CGPoint(x: 0.0, y: 0.0)
+        }
+    }
+    
+    public var gradientEndPoint: CGPoint {
+        switch self {
+        case .xAxis: return CGPoint(x: 1.0, y: 0.0)
+        case .yAxis: return CGPoint(x: 0.0, y: 1.0)
+        }
+    }
+}
+
 public struct ScreenLine<T: ChartPoint> {
     public internal(set) var points: [CGPoint]
     public let colors: [UIColor]
     public let lineWidth: CGFloat
     public let lineJoin: LineJoin
     public let lineCap: LineCap
+    public let lineGradientDirection: LineGradientDirection
     public let animDuration: Float
     public let animDelay: Float
     public let lineModel: ChartLineModel<T>
     public let dashPattern: [Double]?
     
-    init(points: [CGPoint], colors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
+    init(points: [CGPoint], colors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, lineGradientDirection: LineGradientDirection, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
         self.points = points
         self.colors = colors
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
         self.lineCap = lineCap
+        self.lineGradientDirection = lineGradientDirection
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.lineModel = lineModel
         self.dashPattern = dashPattern
     }
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
-        self.init(points: points, colors: [color], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, animDuration: animDuration, animDelay: animDelay, lineModel: lineModel, dashPattern: dashPattern)
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, lineGradientDirection: LineGradientDirection, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
+        self.init(points: points, colors: [color], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, lineGradientDirection: lineGradientDirection, animDuration: animDuration, animDelay: animDelay, lineModel: lineModel, dashPattern: dashPattern)
     }
 }
 
@@ -110,6 +131,7 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineWidth: lineModel.lineWidth,
             lineJoin: lineModel.lineJoin,
             lineCap: lineModel.lineCap,
+            lineGradientDirection: lineModel.lineGradientDirection,
             animDuration: lineModel.animDuration,
             animDelay: lineModel.animDelay,
             lineModel: lineModel,
@@ -145,6 +167,7 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineWidth: screenLine.lineWidth,
             lineJoin: screenLine.lineJoin,
             lineCap: screenLine.lineCap,
+            lineGradientDirection: screenLine.lineGradientDirection,
             animDuration: isInTransform ? 0 : screenLine.animDuration,
             animDelay: isInTransform ? 0 : screenLine.animDelay,
             dashPattern: screenLine.dashPattern
